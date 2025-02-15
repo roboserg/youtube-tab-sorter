@@ -75,8 +75,19 @@ chrome.action.onClicked.addListener(() => {
             }
           });
         });
+
+        // Create a new tab group and add all YouTube tabs to it
+        const tabIds = tabsByWindow[win].map(item => item.tab.id);
+        chrome.tabs.group({ tabIds: tabIds }, (groupId) => {
+          if (chrome.runtime.lastError) {
+            console.error(`Error creating tab group:`, chrome.runtime.lastError);
+          } else {
+            console.log(`Created tab group with ID: ${groupId}`);
+            chrome.tabGroups.update(groupId, { title: "YT", color: "red" });
+          }
+        });
       }
-      console.log("Tabs have been sorted by video duration.");
+      console.log("Tabs have been sorted by video duration and grouped.");
     });
   });
 });

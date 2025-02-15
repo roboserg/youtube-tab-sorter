@@ -6,6 +6,8 @@ A Chrome extension that helps you organize your YouTube tabs by automatically so
 
 - Sorts tabs by video length (shortest to longest)
 - Automatically pauses all playing videos when sorting
+- Creates a red tab group labeled "YT" for better organization
+- Handles multiple Chrome windows independently
 
 ## Installation
 
@@ -22,4 +24,5 @@ A Chrome extension that helps you organize your YouTube tabs by automatically so
 3. The extension will:
    - Pause any currently playing videos
    - Sort your YouTube tabs by video duration (shortest first)
+   - Group all YouTube tabs into a red tab group labeled "YT"
 4. You can resume video playback after sorting is complete

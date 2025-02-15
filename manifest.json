@@ -1,11 +1,12 @@
 {
   "manifest_version": 3,
   "name": "YouTube Tab Sorter",
-  "version": "1.1",
+  "version": "1.2",
   "description": "Sorts your open YouTube tabs by video length.",
   "permissions": [
     "tabs",
-    "scripting"
+    "scripting",
+    "tabGroups"
   ],
   "host_permissions": [
     "https://www.youtube.com/*"
