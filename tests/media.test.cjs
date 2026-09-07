@@ -12,6 +12,7 @@ function loadBackground() {
     URL,
     console,
     chrome: {
+      runtime: { onMessage: { addListener() {} } },
       action: { onClicked: { addListener() {} } },
       tabs: {},
       scripting: {},

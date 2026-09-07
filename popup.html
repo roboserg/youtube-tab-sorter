@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>YouTube Tab Sorter</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <main>
+    <header>
+      <span class="mark" aria-hidden="true">▶</span>
+      <div>
+        <h1>YouTube Tab Sorter</h1>
+        <p class="subtitle">Shortest videos first</p>
+      </div>
+    </header>
+
+    <fieldset>
+      <legend>Sort tabs in</legend>
+      <label class="choice">
+        <input type="radio" name="scope" value="current" checked>
+        <span>Current window</span>
+      </label>
+      <label class="choice">
+        <input type="radio" name="scope" value="all">
+        <span>All windows</span>
+      </label>
+    </fieldset>
+
+    <label class="choice option">
+      <input id="include-unknown" type="checkbox">
+      <span>
+        Put unknown durations at the end
+        <small>Includes videos whose length cannot be read</small>
+      </span>
+    </label>
+
+    <p class="activity-note">Unreadable tabs may activate briefly while their length is checked. Your original tab regains focus when sorting finishes.</p>
+
+    <div class="actions">
+      <button id="sort" class="primary" type="button" disabled>Sort YouTube tabs</button>
+      <button id="undo" class="secondary" type="button" disabled>Undo</button>
+    </div>
+
+    <p id="status" class="status" role="status" aria-live="polite">Loading…</p>
+  </main>
+  <script src="popup.js"></script>
+</body>
+</html>

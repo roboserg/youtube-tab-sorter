@@ -1,0 +1,131 @@
+:root {
+  color-scheme: light dark;
+  font: 14px/1.4 system-ui, -apple-system, "Segoe UI", sans-serif;
+  background: Canvas;
+  color: CanvasText;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  width: 340px;
+  margin: 0;
+  background: #fff;
+  color: #202124;
+}
+
+main { padding: 18px; }
+
+header {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  margin-bottom: 18px;
+}
+
+.mark {
+  display: grid;
+  width: 36px;
+  height: 36px;
+  place-items: center;
+  border-radius: 10px;
+  background: #ff0033;
+  color: white;
+  font-size: 15px;
+  padding-left: 2px;
+}
+
+h1 { margin: 0; font-size: 17px; line-height: 1.25; }
+.subtitle { margin: 2px 0 0; color: #5f6368; font-size: 12px; }
+
+fieldset {
+  display: grid;
+  gap: 4px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+legend {
+  margin-bottom: 7px;
+  padding: 0;
+  font-size: 12px;
+  font-weight: 650;
+  color: #5f6368;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+}
+
+.choice {
+  display: flex;
+  align-items: flex-start;
+  gap: 9px;
+  padding: 7px 8px;
+  border-radius: 7px;
+  cursor: pointer;
+}
+
+.choice:hover { background: #f4f5f7; }
+.choice input { margin: 2px 0 0; accent-color: #d9002b; }
+
+.option {
+  margin-top: 10px;
+  padding-top: 12px;
+  border-top: 1px solid #e2e4e7;
+  border-radius: 0;
+}
+
+.option small {
+  display: block;
+  margin-top: 2px;
+  color: #6f7378;
+  font-size: 11px;
+}
+
+.activity-note {
+  margin: 9px 8px 0 29px;
+  color: #6f7378;
+  font-size: 11px;
+}
+
+.actions {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 8px;
+  margin-top: 17px;
+}
+
+button {
+  min-height: 38px;
+  border-radius: 8px;
+  padding: 0 14px;
+  border: 1px solid transparent;
+  font: inherit;
+  font-weight: 650;
+  cursor: pointer;
+}
+
+.primary { background: #d9002b; color: #fff; }
+.primary:hover:not(:disabled) { background: #bd0026; }
+.secondary { background: #fff; color: #3c4043; border-color: #c7c9cc; }
+.secondary:hover:not(:disabled) { background: #f4f5f7; }
+button:focus-visible, input:focus-visible { outline: 2px solid #1967d2; outline-offset: 2px; }
+button:disabled { cursor: default; opacity: .5; }
+
+.status {
+  min-height: 20px;
+  margin: 11px 2px 0;
+  color: #5f6368;
+  font-size: 12px;
+}
+
+.status.error { color: #b3261e; }
+
+@media (prefers-color-scheme: dark) {
+  body { background: #202124; color: #f1f3f4; }
+  .subtitle, legend, .status, .option small, .activity-note { color: #bdc1c6; }
+  .choice:hover, .secondary:hover:not(:disabled) { background: #303134; }
+  .option { border-color: #4a4c50; }
+  .secondary { background: #202124; color: #e8eaed; border-color: #70757a; }
+  .status.error { color: #f28b82; }
+}
