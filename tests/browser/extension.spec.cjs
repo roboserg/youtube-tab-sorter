@@ -229,7 +229,7 @@ test('preserves pinned tabs and restores original group membership on undo', asy
   const original = await tabsIn(api, windowId);
   const groupedTabIds = [original[1].id, original[2].id];
   await api('updateTab', original[0].id, { pinned: true });
-  const oldGroup = await api('group', { tabIds: groupedTabIds });
+  const oldGroup = await api('group', { tabIds: groupedTabIds, createProperties: { windowId } });
   await api('updateGroup', oldGroup, { title: 'Before', color: 'blue', collapsed: true });
 
   const before = await tabsIn(api, windowId);
