@@ -69,7 +69,12 @@ async function showStatus(status, badge = "", failed = false) {
 
 async function finishStatus(status, badge, failed = false) {
   await showStatus(status, badge, failed);
-  await chrome.storage.session.set({ status });
+  try {
+    await chrome.storage.session.set({ status });
+  } catch (error) {
+    // Persisted feedback is best-effort; tab operations may already have succeeded.
+    console.warn("Unable to persist status:", error);
+  }
 }
 
 async function readDuration(tab) {
@@ -109,12 +114,18 @@ async function collectDurations(tabs) {
         await showStatus(`Loading video ${position + 1} of ${tabs.length}…`, "…");
         await chrome.tabs.update(current.id, { active: true });
         restore.get(current.windowId).lastActivated = current.id;
-        for (let attempt = 0; attempt < RETRY_ATTEMPTS; attempt++) {
+
+        // Pause newly awakened media immediately so it cannot play during the
+        // first retry delay. Reading the duration here also avoids an
+        // unnecessary 400 ms wait when activation made metadata available.
+        let refreshed = await chrome.tabs.get(current.id);
+        if (!isSamePage(refreshed, item.tab)) continue;
+        item.duration = await readDuration(item.tab);
+        for (let attempt = 1; item.duration === null && attempt < RETRY_ATTEMPTS; attempt++) {
           await new Promise(resolve => setTimeout(resolve, RETRY_DELAY_MS));
-          const refreshed = await chrome.tabs.get(current.id);
+          refreshed = await chrome.tabs.get(current.id);
           if (!isSamePage(refreshed, item.tab)) break;
           item.duration = await readDuration(item.tab);
-          if (item.duration !== null) break;
         }
       } catch (error) {
         console.warn(`Unable to load tab ${item.tab.id}:`, error);

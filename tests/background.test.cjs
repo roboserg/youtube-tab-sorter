@@ -183,7 +183,11 @@ test('retries unreadable tabs sequentially, puts unknown last, and restores acti
   assert.deepEqual(h.order(1), [3, 1, 2, 9]);
   assert.equal(reads.get(1), 3);
   assert.equal(reads.get(2), 9);
-  assert.equal(h.calls.filter(c => c[0] === 'timer').length, 11);
+  assert.equal(h.calls.filter(c => c[0] === 'timer').length, 9);
+  const firstActivation = h.calls.findIndex(c => c[0] === 'update' && c[1] === 1);
+  const firstPostActivationRead = h.calls.findIndex((c, i) => i > firstActivation && c[0] === 'execute' && c[1] === 1);
+  const firstPostActivationTimer = h.calls.findIndex((c, i) => i > firstActivation && c[0] === 'timer');
+  assert.ok(firstPostActivationRead > firstActivation && firstPostActivationRead < firstPostActivationTimer);
   assert.deepEqual(h.calls.filter(c => c[0] === 'update').map(c => c[1]), [1, 2, 9]);
   assert.ok(h.calls.some(c => c[0] === 'group:update' && c[1] === 7 && c[2].collapsed === true));
   assert.match(h.session.status, /1 unknown duration\(s\) placed last/);
@@ -339,6 +343,19 @@ test('does not mutate tabs when the Undo snapshot cannot be saved', async () => 
   assert.deepEqual(h.order(1), [1, 2]);
   assert.equal(h.calls.some(c => ['move', 'ungroup', 'group'].includes(c[0])), false);
   assert.match(h.session.status, /^Sort failed: storage full$/);
+});
+
+test('does not report a completed sort as failed when final status persistence fails', async () => {
+  const h = createHarness([watch(1, 1, 0, 30), watch(2, 1, 1, 10)], {
+    async storageSet(name, values) {
+      if (name === 'session' && values.status && !values.undoSnapshot) throw new Error('status write failed');
+    }
+  });
+  await h.api.sortYouTubeTabs();
+  assert.deepEqual(h.order(1), [2, 1]);
+  assert.match((await h.api.getState()).status, /^Sorted 2 tab\(s\)/);
+  assert.equal(h.calls.filter(c => c[0] === 'badge').at(-1)[1].text, '2');
+  assert.ok(h.warnings.some(args => String(args[0]).includes('persist status')));
 });
 
 test('pending and unknown-excluded tabs preserve the previous Undo snapshot', async () => {

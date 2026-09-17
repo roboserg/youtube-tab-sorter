@@ -1,6 +1,6 @@
 {
   "name": "youtube-tab-sorter",
-  "version": "1.3.0",
+  "version": "1.4.0",
   "private": true,
   "description": "Sort open YouTube tabs by video duration.",
   "scripts": {
